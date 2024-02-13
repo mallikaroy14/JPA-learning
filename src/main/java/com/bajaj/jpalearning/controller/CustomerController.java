@@ -1,21 +1,25 @@
 package com.bajaj.jpalearning.controller;
 
-import com.bajaj.jpalearning.CustomerRepository;
+import com.bajaj.jpalearning.beans.ResponseHandler;
+import com.bajaj.jpalearning.repositories.CustomerRepository;
 import com.bajaj.jpalearning.models.Customer;
+import com.bajaj.jpalearning.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    CustomerService customerService = new CustomerService();
 
 //    @GetMapping("/customers")
 //    public String getCustomers() { // method name should be starts from get
@@ -23,27 +27,53 @@ public class CustomerController {
 //        return "This is a customer Api call";
 //    }
 
-    @GetMapping("/customers")
-    public List<Customer> getCustomers() {
-        return customerRepository.findAll();
+    @GetMapping("/")
+    public ResponseEntity<Object> getAll() {
+        return ResponseHandler.createResponse("Customer found", HttpStatus.OK, customerService.getAll());
     }
 
-    @GetMapping("/customers/{id}") // id is variable that's why it should be in {}
-    public Object getCustomerByItsId(@PathVariable Long id) {
+//    @GetMapping("/{id}")
+//    public Object getCustomersById(@PathVariable Long id){
+//        customerRepository.deleteById(Long id);
+//        return "";
+//    }
 
-        Optional<Customer> customer = customerRepository.findById(id);
-
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        Optional<Customer> customer = customerService.get(id);
         if (customer.isPresent()) {
-            return customer.get();
+            return ResponseHandler.createResponse("Customer Found", HttpStatus.OK, customer.get());
         } else {
-            return "Customer not found";
+            return ResponseHandler.createResponse("Not Found", HttpStatus.OK, null);
         }
     }
 
-    @DeleteMapping("/customers/{id}")
-    public String deleteCustomer(@PathVariable Long id) {
-        customerRepository.deleteById(id);
-        return "Customer deleted";
+    @PostMapping("/")
+    public Object create(@RequestBody Customer customer) {
+      Object customer1 = customerService.create(customer);
+        if (customer1!= null) {
+            return ResponseHandler.createResponse("Found", HttpStatus.CREATED, customer1);
+        } else {
+            return ResponseHandler.createResponse("Customer already Exists", HttpStatus.CONFLICT, null);
+        }
     }
+
+//    @GetMapping("/customers/{id}") // id is variable that's why it should be in {}
+//    public Object getCustomerByItsId(@PathVariable Long id) {
+//
+//        Optional<Customer> customer = customerRepository.findById(id);
+//
+//        if (customer.isPresent()) {
+//            return customer.get();
+//        } else {
+//            return "Customer not found";
+//        }
+//    }
+//
+//    @DeleteMapping("/customers/{id}")
+//    public String deleteCustomer(@PathVariable Long id) {
+//        customerRepository.deleteById(id);
+//        return "Customer deleted";
+//    }
 
 }

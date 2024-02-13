@@ -1,4 +1,4 @@
-package com.bajaj.jpalearning;
+package com.bajaj.jpalearning.repositories;
 
 
 import com.bajaj.jpalearning.models.Customer;
@@ -20,5 +20,6 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
     @Query("Select c from Customer c where c.name = ?1 and c.age = ?2")
     List<Customer> findCustomers(String name, int age);
+
 
 }

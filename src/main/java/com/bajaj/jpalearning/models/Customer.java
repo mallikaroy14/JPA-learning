@@ -5,15 +5,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="customers")
+@Table(name = "customers")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // To auto increament
     private Long id;
 
-    @Column(length = 30, nullable = false )
+    @Column(length = 30, nullable = false)
     private String name;
 
     private int age;
@@ -22,6 +24,16 @@ public class Customer {
     private String emailId; // Write in camel case it will take email_Id in table
 
     private String password;
+
+//    @ManyToMany
+//    private List<Product> products;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Cart> carts;
+
+    //cascade = CascadeType.ALL -> will work for all
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Address> addresses;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -32,6 +44,7 @@ public class Customer {
     public Customer() {
 
     }
+
     public Customer(String name, int age, String emailId, String password) {
         this.name = name;
         this.age = age;
@@ -79,6 +92,31 @@ public class Customer {
         this.password = password;
     }
 
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -87,6 +125,9 @@ public class Customer {
                 ", age=" + age +
                 ", emailId='" + emailId + '\'' +
                 ", password='" + password + '\'' +
+                ", addresses=" + addresses +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

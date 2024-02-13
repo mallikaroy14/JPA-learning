@@ -1,29 +1,54 @@
 package com.bajaj.jpalearning;
 
+import com.bajaj.jpalearning.models.Address;
+import com.bajaj.jpalearning.models.Customer;
+import com.bajaj.jpalearning.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
-public class JpaLearningApplication {
-	@Autowired
-	private CustomerRepository customerRepository;
+public class JpaLearningApplication implements CommandLineRunner {
+    @Autowired
+    private CustomerRepository customerRepository;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		SpringApplication.run(JpaLearningApplication.class, args);
+        SpringApplication.run(JpaLearningApplication.class, args);
 
-	}
+    }
 
-	// ... it convert into  array run(1,2,3,4)
-	// Entity
-	//Repository -> functions
+    @Override
+    public void run(String... args) throws Exception {
+
+        Customer customer = new Customer("mallika", 23, "mallika@gmail.com", "malika");
+
+
+        Address address1 = new Address(234, "KP", "pune", "231234");
+        address1.setCustomer(customer);
+        Address address2 = new Address(23, "PK", "pune", "10014");
+        address2.setCustomer(customer);
+
+        List<Address> addressList = new ArrayList<>();
+        addressList.add(address1);
+        addressList.add(address2);
+        customer.setAddresses(addressList);
+
+        customerRepository.save(customer);
+    }
+
+    // ... it convert into  array run(1,2,3,4)
+    // Entity
+    //Repository -> functions
 //	@Override
 //	public void run(String... args) throws Exception {
 
 
-		// Insert operation
+    // Insert operation
 
         /*
         Customer customer1 = new Customer("Radhika", 22, "radhika@gmail.com", "radhika");
@@ -34,7 +59,7 @@ public class JpaLearningApplication {
         customerRepository.save(customer3);
          */
 
-		// Select
+    // Select
 /*
         List<Customer> customerList = customerRepository.findAll();
         customerList.forEach(
@@ -43,7 +68,7 @@ public class JpaLearningApplication {
                 }));
 
  */
-		// Where - select operation for single element based on id
+    // Where - select operation for single element based on id
         /*
          Optional<Customer> customer = customerRepository.findById(1L); // If customer with that id is not present hence take it as Optional
 
@@ -54,7 +79,7 @@ public class JpaLearningApplication {
          }
          */
 
-		// Find customer with Email id
+    // Find customer with Email id
 
         /*
         Optional<Customer> customer1 = customerRepository.findByEmailId("radhika@gmail.com"); // If customer with that id is not present hence take it as Optional
@@ -66,7 +91,7 @@ public class JpaLearningApplication {
         }
 
          */
-		// Find customer with Email id and age
+    // Find customer with Email id and age
         /*
         Optional<Customer> customer2 = customerRepository.findByEmailIdAndAge("radhika@gmail.com", 22); // If customer with that id is not present hence take it as Optional
 
@@ -78,7 +103,7 @@ public class JpaLearningApplication {
         */
 
 
-		// Find customer with Email id or age
+    // Find customer with Email id or age
 
        /*
         List<Customer> customerList = customerRepository.findByEmailIdOrAge("malika@gmail.com", 22); // If customer with that id is not present hence take it as Optional
@@ -96,7 +121,7 @@ public class JpaLearningApplication {
                 }));
          */
 
-		// Finding and Updating
+    // Finding and Updating
 /*
         Optional<Customer> customer = customerRepository.findById(2L);
 
