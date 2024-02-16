@@ -1,5 +1,8 @@
 package com.bajaj.jpalearning.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,7 +16,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "room_no", nullable = false)
+    @Column(name = "room_no")
     private Integer roomNo;
 
     @Column(nullable = false)
@@ -32,7 +35,11 @@ public class Address {
     private LocalDateTime updatedAt;
 
     @ManyToOne
+//    @JsonBackReference
     private Customer customer;
+
+    public Address() {
+    }
 
     public Address(Integer roomNo, String details, String city, String pincode) {
         this.roomNo = roomNo;
@@ -64,10 +71,12 @@ public class Address {
                 '}';
     }
 
+    @JsonIgnore
     public Customer getCustomer() {
         return customer;
     }
 
+    @JsonProperty("customer")
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

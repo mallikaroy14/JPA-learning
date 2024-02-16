@@ -1,18 +1,14 @@
 package com.bajaj.jpalearning;
 
-import com.bajaj.jpalearning.models.Address;
-import com.bajaj.jpalearning.models.Customer;
 import com.bajaj.jpalearning.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootApplication
-public class JpaLearningApplication implements CommandLineRunner {
+public class JpaLearningApplication
+//        implements CommandLineRunner
+{
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -22,24 +18,24 @@ public class JpaLearningApplication implements CommandLineRunner {
 
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-
-        Customer customer = new Customer("mallika", 23, "mallika@gmail.com", "malika");
-
-
-        Address address1 = new Address(234, "KP", "pune", "231234");
-        address1.setCustomer(customer);
-        Address address2 = new Address(23, "PK", "pune", "10014");
-        address2.setCustomer(customer);
-
-        List<Address> addressList = new ArrayList<>();
-        addressList.add(address1);
-        addressList.add(address2);
-        customer.setAddresses(addressList);
-
-        customerRepository.save(customer);
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//
+//        Customer customer = new Customer("mallika", 23, "mallika@gmail.com", "malika");
+//
+//
+//        Address address1 = new Address(234, "KP", "pune", "231234");
+//        address1.setCustomer(customer);
+//        Address address2 = new Address(23, "PK", "pune", "10014");
+//        address2.setCustomer(customer);
+//
+//        List<Address> addressList = new ArrayList<>();
+//        addressList.add(address1);
+//        addressList.add(address2);
+//        customer.setAddresses(addressList);
+//
+//        customerRepository.save(customer);
+//    }
 
     // ... it convert into  array run(1,2,3,4)
     // Entity

@@ -40,22 +40,14 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
-        Optional<Customer> customer = customerService.get(id);
-        if (customer.isPresent()) {
-            return ResponseHandler.createResponse("Customer Found", HttpStatus.OK, customer.get());
-        } else {
-            return ResponseHandler.createResponse("Not Found", HttpStatus.OK, null);
-        }
+        Customer customer = customerService.get(id);
+        return ResponseHandler.createResponse("Customer Found", HttpStatus.OK, customer);
     }
 
     @PostMapping("/")
     public Object create(@RequestBody Customer customer) {
-      Object customer1 = customerService.create(customer);
-        if (customer1!= null) {
-            return ResponseHandler.createResponse("Found", HttpStatus.CREATED, customer1);
-        } else {
-            return ResponseHandler.createResponse("Customer already Exists", HttpStatus.CONFLICT, null);
-        }
+        Object customer1 = customerService.create(customer);
+        return ResponseHandler.createResponse("Found", HttpStatus.CREATED, customer1);
     }
 
 //    @GetMapping("/customers/{id}") // id is variable that's why it should be in {}

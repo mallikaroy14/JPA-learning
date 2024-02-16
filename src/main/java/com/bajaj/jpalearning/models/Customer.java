@@ -1,11 +1,14 @@
 package com.bajaj.jpalearning.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,16 +26,20 @@ public class Customer {
     @Column(unique = true)
     private String emailId; // Write in camel case it will take email_Id in table
 
+    @JsonIgnore
     private String password;
 
 //    @ManyToMany
 //    private List<Product> products;
 
     @OneToMany(mappedBy = "customer")
-    private List<Cart> carts;
+    @JsonIgnore
+    private List<CartItems> cartItems;
 
     //cascade = CascadeType.ALL -> will work for all
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonManagedReference
+    @JsonIgnore
     private List<Address> addresses;
 
     @CreationTimestamp
@@ -50,6 +57,18 @@ public class Customer {
         this.age = age;
         this.emailId = emailId;
         this.password = password;
+    }
+
+    public Customer(Long id, String name, int age, String emailId, String password, List<CartItems> cartItems, List<Address> addresses, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.emailId = emailId;
+        this.password = password;
+        this.cartItems = cartItems;
+        this.addresses = addresses;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -84,10 +103,12 @@ public class Customer {
         this.emailId = emailId;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
