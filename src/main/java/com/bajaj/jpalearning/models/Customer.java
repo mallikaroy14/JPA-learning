@@ -26,6 +26,8 @@ public class Customer {
     @Column(unique = true)
     private String emailId; // Write in camel case it will take email_Id in table
 
+    private String username;
+
     @JsonIgnore
     private String password;
 
@@ -52,14 +54,23 @@ public class Customer {
 
     }
 
-    public Customer(String name, int age, String emailId, String password) {
+    public Customer(String name, int age, String emailId, String password, String username) {
         this.name = name;
         this.age = age;
         this.emailId = emailId;
         this.password = password;
+        this.username = username;
     }
 
-    public Customer(Long id, String name, int age, String emailId, String password, List<CartItems> cartItems, List<Address> addresses, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Customer(Long id, String name, int age, String emailId, String password, List<CartItems> cartItems, List<Address> addresses, LocalDateTime createdAt, LocalDateTime updatedAt, String username) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -69,6 +80,7 @@ public class Customer {
         this.addresses = addresses;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.username = username;
     }
 
     public Long getId() {
