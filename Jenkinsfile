@@ -18,3 +18,4 @@ pipeline {
             }
     }
 }
+// only app deployment file apply cmd

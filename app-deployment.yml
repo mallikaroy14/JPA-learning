@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bajajmall-app
+  labels:
+    app: bajajmall-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bajajmall-app
+  template:
+    metadata:
+      labels:
+        app: bajajmall-app
+    spec:
+      containers:
+        - name: bajaj-app-cont
+          image: mallikaroy/bajajmall-app2.0:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/bajajmall"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "postgres"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bajajmall-app-service
+  labels:
+    app: spring-boot-app
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30000  # You can choose any available port in your cluster
+  selector:
+    app: bajajmall-app
